@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TournamentAPI.Data.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,12 @@ builder.Services.AddControllers(opt => opt.ReturnHttpNotAcceptable = true)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<TournamentAPIContext>();
+builder.Services.AddDbContext<TournamentAPIContext>(options => 
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("TournamentAPIContextConnectionString") ??
+        throw new InvalidOperationException("Connection string 'TournamentAPIContextConnectionString' not found")
+    )
+);
 
 var app = builder.Build();
 
