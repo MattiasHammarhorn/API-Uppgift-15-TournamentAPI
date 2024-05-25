@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TournamentAPI.Api.Extensions;
+using TournamentAPI.Core.Repositories;
 using TournamentAPI.Data.Data;
+using TournamentAPI.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<TournamentAPIContext>(options =>
         throw new InvalidOperationException("Connection string 'TournamentAPIContextConnectionString' not found")
     )
 );
+
+builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 
 var app = builder.Build();
 
