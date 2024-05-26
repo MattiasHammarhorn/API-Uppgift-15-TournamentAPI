@@ -35,8 +35,8 @@ namespace TournamentAPI.Data.Data
 
                 var title = faker.Company.Bs();
                 var startDate = DateTime.Now.AddDays(3);
-                var endDate = startDate.AddDays(rand.Next(2,6));
-                var games = GenerateGames(rand.Next(2, 5), startDate, endDate);
+                var endDate = startDate.AddMonths(3);
+                var games = GenerateGames(2, startDate, endDate);
 
                 var tournament = new Tournament
                 {
