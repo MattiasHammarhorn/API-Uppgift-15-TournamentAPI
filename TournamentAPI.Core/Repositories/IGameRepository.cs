@@ -15,6 +15,5 @@ namespace TournamentAPI.Core.Repositories
         void Add(Game game);
         void Update(Game game);
         void Remove(Game game);
-        Task<bool> CompleteAsync();
     }
 }

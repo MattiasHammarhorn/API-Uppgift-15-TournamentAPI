@@ -16,25 +16,25 @@ namespace TournamentAPI.Api.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly IGameRepository _gameRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GamesController(IGameRepository gameRepository)
+        public GamesController(IUnitOfWork unitOfWork)
         {
-            _gameRepository = gameRepository;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Games
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return Ok(await _gameRepository.GetAllAsync());
+            return Ok(await _unitOfWork.GameRepository.GetAllAsync());
         }
 
         // GET: api/Games/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Game>> GetGame(int id)
         {
-            var game = await _gameRepository.GetAsync(id);
+            var game = await _unitOfWork.GameRepository.GetAsync(id);
 
             if (game == null)
             {
@@ -54,11 +54,11 @@ namespace TournamentAPI.Api.Controllers
                 return BadRequest();
             }
 
-            _gameRepository.Update(game);
+            _unitOfWork.GameRepository.Update(game);
 
             try
             {
-                await _gameRepository.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -80,8 +80,8 @@ namespace TournamentAPI.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
-            _gameRepository.Add(game);
-            await _gameRepository.CompleteAsync();
+            _unitOfWork.GameRepository.Add(game);
+            await _unitOfWork.CompleteAsync();
 
             return CreatedAtAction("GetGame", new { id = game.Id }, game);
         }
@@ -90,21 +90,21 @@ namespace TournamentAPI.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
-            var game = await _gameRepository.GetAsync(id);
+            var game = await _unitOfWork.GameRepository.GetAsync(id);
             if (game == null)
             {
                 return NotFound();
             }
 
-            _gameRepository.Remove(game);
-            await _gameRepository.CompleteAsync();
+            _unitOfWork.GameRepository.Remove(game);
+            await _unitOfWork.CompleteAsync();
 
             return NoContent();
         }
 
         private async Task<bool> GameExists(int id)
         {
-            return await _gameRepository.AnyAsync(id);
+            return await _unitOfWork.GameRepository.AnyAsync(id);
         }
     }
 }

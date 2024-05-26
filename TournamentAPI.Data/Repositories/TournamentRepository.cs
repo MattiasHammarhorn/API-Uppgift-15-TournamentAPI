@@ -48,10 +48,5 @@ namespace TournamentAPI.Data.Repositories
         {
             _context.Tournaments.Remove(tournament);
         }
-
-        public async Task<bool> CompleteAsync()
-        {
-            return (await _context.SaveChangesAsync() >= 0);
-        }
     }
 }
