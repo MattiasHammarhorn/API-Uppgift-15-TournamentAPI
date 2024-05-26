@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TournamentAPI.Core.Dto;
@@ -131,6 +133,37 @@ namespace TournamentAPI.Api.Controllers
             }
 
             _unitOfWork.GameRepository.Remove(game);
+            //todo: add exception handling to return status code 500
+            await _unitOfWork.CompleteAsync();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{gameId}")]
+        public async Task<ActionResult> PatchGame(int gameId,
+            JsonPatchDocument<GameDto> patchDocument)
+        {
+            var gameEntity = await _unitOfWork.GameRepository.GetAsync(gameId);
+            if (gameEntity == null)
+            {
+                return NotFound();
+            }
+
+            var gameToPatch = _mapper.Map<GameDto>(gameEntity);
+
+            patchDocument.ApplyTo(gameToPatch, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!TryValidateModel(gameToPatch))
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(gameToPatch, gameEntity);
             await _unitOfWork.CompleteAsync();
 
             return NoContent();
