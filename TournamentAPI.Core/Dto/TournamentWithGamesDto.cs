@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace TournamentAPI.Core.Dto
 {
-    public class TournamentDto
+    public class TournamentWithGamesDto
     {
-        [Required]
-        [MaxLength(25, ErrorMessage = "Title cannot contain more than 25 characters.")]
         public string Title { get; set; }
-        [Required]
         public DateTime StartDate { get; set; }
-        public DateTime EndDate {
+        public DateTime EndDate
+        {
             get
             {
                 return StartDate.AddMonths(3);
             }
         }
+
+        public List<GameDto> Games { get; set; } = new List<GameDto>();
     }
 }

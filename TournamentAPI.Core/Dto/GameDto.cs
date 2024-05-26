@@ -10,6 +10,7 @@ namespace TournamentAPI.Core.Dto
     public class GameDto
     {
         [Required]
+        [MaxLength(25, ErrorMessage= "Title cannot contain more than 25 characters.")]
         public string Title { get; set; } = string.Empty;
         [Required]
         public DateTime Time { get; set; }

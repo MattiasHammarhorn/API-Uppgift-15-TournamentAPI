@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -30,24 +31,35 @@ namespace TournamentAPI.Api.Controllers
 
         // GET: api/Tournaments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournaments()
+        public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournaments(bool includeGames = false)
         {
-            var tournaments = await _unitOfWork.TournamentRepository.GetAllAsync();
+            var tournaments = await _unitOfWork.TournamentRepository.GetAllAsync(includeGames);
+
+            if (includeGames)
+            {
+                return Ok(_mapper.Map<IEnumerable<TournamentWithGamesDto>>(tournaments));
+            }
+
             return Ok(_mapper.Map<IEnumerable<TournamentDto>>(tournaments));
         }
 
         // GET: api/Tournaments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TournamentDto>> GetTournament(int id)
+        public async Task<IActionResult> GetTournament(int id, bool includeGames = false)
         {
-            var tournament = await _unitOfWork.TournamentRepository.GetAsync(id);
+            var tournament = await _unitOfWork.TournamentRepository.GetAsync(id, includeGames);
 
             if (tournament == null)
             {
                 return NotFound();
             }
 
-            return _mapper.Map<TournamentDto>(tournament);
+            if (includeGames)
+            {
+                return Ok(_mapper.Map<TournamentWithGamesDto>(tournament));
+            }
+
+            return Ok(_mapper.Map<TournamentDto>(tournament));
         }
 
         // PUT: api/Tournaments/5
@@ -55,12 +67,12 @@ namespace TournamentAPI.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTournament(int id, TournamentDto tournament)
         {
-            if (!await _unitOfWork.TournamentRepository.AnyAsync(id))
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
-            var tournamentEntity = await _unitOfWork.TournamentRepository.GetAsync(id);
+            var tournamentEntity = await _unitOfWork.TournamentRepository.GetAsync(id, false);
             if (tournamentEntity == null)
             {
                 return NotFound();
@@ -82,7 +94,7 @@ namespace TournamentAPI.Api.Controllers
                 }
                 else
                 {
-                    throw;
+                    return StatusCode(500);
                 }
             }
 
@@ -92,12 +104,24 @@ namespace TournamentAPI.Api.Controllers
         // POST: api/Tournaments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TournamentDto>> PostTournament(Tournament tournament)
+        public async Task<ActionResult<TournamentDto>> PostTournament(TournamentDto tournament)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var finalTournament = _mapper.Map<Tournament>(tournament);
 
             _unitOfWork.TournamentRepository.Add(finalTournament);
-            await _unitOfWork.CompleteAsync();
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (DbException)
+            {
+                return StatusCode(500);
+            }
 
             var createdTournament = _mapper.Map<TournamentDto>(finalTournament);
 
@@ -108,14 +132,22 @@ namespace TournamentAPI.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTournament(int id)
         {
-            var tournament = await _unitOfWork.TournamentRepository.GetAsync(id);
+            var tournament = await _unitOfWork.TournamentRepository.GetAsync(id, false);
             if (tournament == null)
             {
                 return NotFound();
             }
 
             _unitOfWork.TournamentRepository.Remove(tournament);
-            await _unitOfWork.CompleteAsync();
+
+            try
+            {
+                await _unitOfWork.CompleteAsync();
+            }
+            catch (DbException)
+            {
+                return StatusCode(500);
+            }
 
             return NoContent();
         }

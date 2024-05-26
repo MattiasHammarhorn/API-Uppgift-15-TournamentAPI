@@ -55,9 +55,14 @@ namespace TournamentAPI.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGame(int id, GameDto game)
         {
-            if (!await _unitOfWork.GameRepository.AnyAsync(id))
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
+            }
+
+            if (!await _unitOfWork.TournamentRepository.AnyAsync(game.TournamentId))
+            {
+                return NotFound();
             }
 
             var gameEntity = await _unitOfWork.GameRepository.GetAsync(id);
@@ -95,6 +100,11 @@ namespace TournamentAPI.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(GameDto game)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             if (!await _unitOfWork.TournamentRepository.AnyAsync(game.TournamentId))
             {
                 return NotFound();
