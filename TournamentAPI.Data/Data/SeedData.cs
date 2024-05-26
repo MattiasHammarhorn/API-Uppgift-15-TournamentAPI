@@ -19,7 +19,46 @@ namespace TournamentAPI.Data.Data
 
             faker = new Faker("sv");
 
-            var tournaments = GenerateTournaments(3);
+            //var tournaments = GenerateTournaments(3);
+            var tournaments = new List<Tournament>
+            {
+                new Tournament
+                {
+                    Title = "Turnering 1",
+                    StartDate = DateTime.Now,
+                    Games = new List<Game>
+                    {
+                        new Game
+                        {
+                            Title = "T1 - Match 1",
+                            Time = DateTime.Now.AddMinutes(10)
+                        },
+                        new Game
+                        {
+                            Title = "T1 - Match 2",
+                            Time = DateTime.Now.AddMinutes(20)
+                        }
+                    }
+                },
+                new Tournament
+                {
+                    Title = "Turnering 2",
+                    StartDate = DateTime.Now,
+                    Games = new List<Game>
+                    {
+                        new Game
+                        {
+                            Title = "T2 - Match 3",
+                            Time = DateTime.Now.AddMinutes(30)
+                        },
+                        new Game
+                        {
+                            Title = "T2 - Match 4",
+                            Time = DateTime.Now.AddMinutes(40)
+                        }
+                    }
+                },
+            };
             await context.AddRangeAsync(tournaments);
 
             await context.SaveChangesAsync();
