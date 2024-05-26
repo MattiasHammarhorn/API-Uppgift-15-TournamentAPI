@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using TournamentAPI.Api.Extensions;
@@ -26,6 +27,8 @@ builder.Services.AddDbContext<TournamentAPIContext>(options =>
 builder.Services.AddScoped<ITournamentRepository, TournamentRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddAutoMapper(typeof(TournamentMappings));
 
 var app = builder.Build();
 
