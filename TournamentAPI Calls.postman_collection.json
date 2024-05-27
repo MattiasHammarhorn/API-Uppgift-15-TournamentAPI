@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "5e0894d1-894a-463c-887f-a25225515078",
+		"name": "TournamentAPI Calls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19483992"
+	},
+	"item": [
+		{
+			"name": "GET Tournaments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7209/api/tournaments",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7209",
+					"path": [
+						"api",
+						"tournaments"
+					],
+					"query": [
+						{
+							"key": "includeGames",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Tournament",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7209/api/tournaments/5",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7209",
+					"path": [
+						"api",
+						"tournaments",
+						"5"
+					],
+					"query": [
+						{
+							"key": "includeGames",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7209/api/games",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7209",
+					"path": [
+						"api",
+						"games"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "Saigon",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://localhost:7209/api/games/7"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Tournament",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"title\": \"string\",\r\n    \"startDate\": \"2024-05-26T17:30:15.459Z\",\r\n    \"games\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Tournament (as DTO)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Dino Dynamics 2024\",\r\n    \"startDate\": \"2024-05-26T17:30:15.459Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"title\": \"string\",\r\n    \"time\": \"2024-05-24T17:30:15.459Z\",\r\n    \"tournamentId\": \"1\",\r\n    \"tournament\": {\r\n        \"id\": 0,\r\n        \"title\": \"string\",\r\n        \"startDate\": \"2024-05-24T17:30:15.459Z\",\r\n        \"games\": []\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/games"
+			},
+			"response": []
+		},
+		{
+			"name": "POST Game (as DTO)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Dino Agility\",\r\n    \"startDate\": \"2024-05-26T17:45:15.459Z\",\r\n    \"tournamentId\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/games"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Tournament",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments/1"
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE Game",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "https://localhost:7209/api/games/1"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Tournament",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"string\",\r\n    \"startDate\": \"2024-05-26T17:30:15.459Z\",\r\n    \"games\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments/5"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Tournament (as DTO)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"string\",\r\n    \"startDate\": \"2024-05-26T17:30:15.459Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments/4"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Game",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 12,\r\n    \"title\": \"string\",\r\n    \"time\": \"2024-05-24T17:30:15.459Z\",\r\n    \"tournamentId\": 9,\r\n    \"tournament\": {\r\n        \"id\": 0,\r\n        \"title\": \"string\",\r\n        \"startDate\": \"2024-05-26T11:53:25.939Z\",\r\n        \"games\": [\r\n            \r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/games/12"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Game (as DTO)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"string\",\r\n    \"time\": \"2024-05-24T17:30:15.459Z\",\r\n    \"tournamentId\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/games/7"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Tournament",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/title\",\r\n        \"value\": \"Saigon Psygone Patch Edit\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/tournaments/4"
+			},
+			"response": []
+		},
+		{
+			"name": "PATCH Game",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/title\",\r\n        \"value\": \"Saigoneering Patch Edit\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://localhost:7209/api/games/7"
+			},
+			"response": []
+		}
+	]
+}
